@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import {Alert, Image, StyleSheet, Text, View, TouchableHighlight} from "react-native";
+import React, { Component } from "react";
+import { Alert, Image, StyleSheet, Text, View, TouchableHighlight } from "react-native";
 
 export default class extends Component {
-  openBook(){
+  openBook() {
     Alert.alert(
       'Открываем книгу',
       'Но позже...',
@@ -24,9 +24,6 @@ export default class extends Component {
             <Text style={styles.title}>
               {this.props.data.title}
             </Text>
-            <Text style={styles.author}>
-              {this.props.data.author}
-            </Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -45,10 +42,5 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-  },
-  author: {
-    marginTop: 10,
-    fontStyle: 'italic',
-    fontSize: 16,
   },
 });

@@ -1,67 +1,34 @@
-import React, {Component} from 'react';
-import {StyleSheet, Text, View, Button, Alert} from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 import BookList from './components/BookList';
+import * as DocumentPicker from 'expo-document-picker';
 
 export default class App extends Component {
   state = {
-    books: [
-      {
-        id: 0,
-        title: 'Война и Мир',
-        image: 'https://vignette.wikia.nocookie.net/memes2019/images/7/74/Rm1.jpg/revision/latest?cb=20181211202935&path-prefix=ru',
-        author: 'Лев Николаевич Толстой',
-      },
-      {
-        id: 1,
-        title: 'Зелёная миля',
-        image: 'https://vignette.wikia.nocookie.net/memes2019/images/7/74/Rm1.jpg/revision/latest?cb=20181211202935&path-prefix=ru',
-        author: 'Лев Николаевич Толстой',
-      },
-      {
-        id: 2,
-        title: 'Война и Мир',
-        image: 'https://vignette.wikia.nocookie.net/memes2019/images/7/74/Rm1.jpg/revision/latest?cb=20181211202935&path-prefix=ru',
-        author: 'Лев Николаевич Толстой',
-      },
-      {
-        id: 3,
-        title: 'Война и Мир',
-        image: 'https://vignette.wikia.nocookie.net/memes2019/images/7/74/Rm1.jpg/revision/latest?cb=20181211202935&path-prefix=ru',
-        author: 'Лев Николаевич Толстой',
-      },
-      {
-        id: 4,
-        title: 'Война и Мир',
-        image: 'https://vignette.wikia.nocookie.net/memes2019/images/7/74/Rm1.jpg/revision/latest?cb=20181211202935&path-prefix=ru',
-        author: 'Лев Николаевич Толстой',
-      },
-      {
-        id: 5,
-        title: 'Война и Мир',
-        image: 'https://vignette.wikia.nocookie.net/memes2019/images/7/74/Rm1.jpg/revision/latest?cb=20181211202935&path-prefix=ru',
-        author: 'Лев Николаевич Толстой',
-      },
-      {
-        id: 6,
-        title: 'Война и Мир',
-        image: 'https://vignette.wikia.nocookie.net/memes2019/images/7/74/Rm1.jpg/revision/latest?cb=20181211202935&path-prefix=ru',
-        author: 'Лев Николаевич Толстой',
-      },
-      {
-        id: 7,
-        title: 'Война и Мир',
-        image: 'https://vignette.wikia.nocookie.net/memes2019/images/7/74/Rm1.jpg/revision/latest?cb=20181211202935&path-prefix=ru',
-        author: 'Лев Николаевич Толстой',
-      },
-    ]
+    books: []
   };
 
-  loadBook() {
-    Alert.alert(
-      'Загрузить книгу',
-      'Но не сейчас...',
-    )
+  async findBook() {
+    await DocumentPicker.getDocumentAsync()
+      .then(result => {
+        if (result.type === 'cancel') return;
+        this.addBook(result);
+      });
   };
+
+  addBook(book) {
+    this.setState({
+      books: [
+        ...this.state.books,
+        {
+          id: this.state.books.length,
+          title: book.name,
+          image: 'https://vignette.wikia.nocookie.net/memes2019/images/7/74/Rm1.jpg/revision/latest?cb=20181211202935&path-prefix=ru',
+          uri: book.uri,
+        }
+      ]
+    });
+  }
 
   render() {
     return (
@@ -70,8 +37,7 @@ export default class App extends Component {
         <View style={styles.content}>
           <BookList books={this.state.books}/>
           <Button
-            style={styles.button}
-            onPress={this.loadBook}
+            onPress={() => this.findBook()}
             title="Загрузить книгу"
           />
         </View>
@@ -93,7 +59,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 30,
   },
-  button: {
-    backgroundColor: '#000000',
-  }
 });
